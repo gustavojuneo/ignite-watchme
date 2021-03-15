@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { api } from '../services/api'
+import { Header } from './Header'
 import { MovieCard } from './MovieCard'
 
 interface MovieProps {
@@ -15,9 +16,10 @@ interface MovieProps {
 
 interface ContentProps {
   genreId: number
+  genreTitle: string
 }
 
-export function Content({ genreId }: ContentProps) {
+export function Content({ genreId, genreTitle }: ContentProps) {
   const [movies, setMovies] = useState<MovieProps[]>([])
 
   useEffect(() => {
@@ -27,18 +29,22 @@ export function Content({ genreId }: ContentProps) {
   }, [genreId])
 
   return (
-    <main>
-      <div className="movies-list">
-        {movies.map(movie => (
-          <MovieCard
-            key={movie.imdbID}
-            title={movie.Title}
-            poster={movie.Poster}
-            runtime={movie.Runtime}
-            rating={movie.Ratings[0].Value}
-          />
-        ))}
-      </div>
-    </main>
+    <div className="container">
+      <Header title={genreTitle} />
+
+      <main>
+        <div className="movies-list">
+          {movies.map(movie => (
+            <MovieCard
+              key={movie.imdbID}
+              title={movie.Title}
+              poster={movie.Poster}
+              runtime={movie.Runtime}
+              rating={movie.Ratings[0].Value}
+            />
+          ))}
+        </div>
+      </main>
+    </div>
   )
 }
